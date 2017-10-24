@@ -2,7 +2,9 @@
 use 5.010_000;
 use warnings;
 use strict;
+use POSIX;
 use Excel::Writer::XLSX;
+
 #also see http://search.cpan.org/~jmcnamara/Excel-Writer-XLSX/lib/Excel/Writer/XLSX.pm#write_string%28_$row,_$column,_$string,_$format_%29
 #and http://search.cpan.org/~jmcnamara/Excel-Writer-XLSX/lib/Excel/Writer/XLSX.pm#Example_5
 #
@@ -34,15 +36,21 @@ for my $file (@files){
 	open (TXTFILE, "$file") or die "Cannot read '$file', check if file is present... and if specified correctly";
 	my $workBook = Excel::Writer::XLSX->new($xlsxfile);
 	print "$0: output file written to ${xlsxfile}\n";
-	my $workSheet = $workBook->add_worksheet();
+	my $workSheets;
+	push(@{$workSheets},$workBook->add_worksheet());
 	
+	my $colmax=256;
 	while (<TXTFILE>) {
 		chomp;
 		my @t = split("$del");
 	
 		my $col = 0;
 		for my $token (@t) {
-			$workSheet -> write(($.-1), $col, $token);
+			#split to multiple tables if too big
+			if(not(floor($col/$colmax) < scalar(@{$workSheets}) )){
+				push(@{$workSheets},$workBook->add_worksheet());
+			}
+			$workSheets -> [floor($col/$colmax)] -> write(($.-1), $col%$colmax, $token);
 			$col++;
 		}
 	}
