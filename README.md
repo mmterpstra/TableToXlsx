@@ -1,10 +1,10 @@
-#Summary / main notes
+# Summary / main notes
 
 Convert your text based tables to excel format / Minimal example of the Excel::Writer::XLSX module in perl.
 Some tables are best advised to be inspected in R but sometimes the user has more experience with spreadsheets. So for user friendlyness i made an automatic conversion tool to a spreadsheet friendly format using the 'Excel-Writer-XLSX-0.77' module / perl-v5.10.0. Although I've not tested it should be forward compatible.
 The tableToXlsxAsStrings.pl should be mainly be used to convert genename tables to xlsx tables and for conversion of comma separated integer subfields. For incompatibilities with the dutch locale -> don't use the locale!
 
-#Requirements
+# Requirements
 
 perl v5.10.0. Main goal: get 'Excel-Writer-XLSX-0.77' working. The rest are missing dependancies (of perl 5.10.0) in newer versions of perl most of them come preinstalled.
 Archive-Zip-1.37
@@ -13,7 +13,7 @@ File-Path-2.09
 File-Temp-0.2304
 parent-0.228
 
-#Installing on Ubuntu
+# Installing on Ubuntu
 
 Code below because copy paste installs are the best
 ```
@@ -30,7 +30,7 @@ echo '#table to xlsx conversion' >>~/.bashrc
 echo 'export PATH="$PATH:${PWD}/TableToXlsx-master/"' >>~/.bashrc
 ```
 
-#Use
+# Use
 
 ```
 perl ${TABTOXLSX_HOME}tableToXlsxAsStrings.pl DELIM FILE
@@ -39,7 +39,7 @@ FILE	File that is delimited with DELIM
 output in FILE.xlsx
 ```
 
-Use examples
+# Examples
 
 This both examples will generate file.tsv.xlsx the second will overwrite the first.
 
@@ -49,7 +49,7 @@ perl ${TABTOXLSX_HOME}tableToXlsx.pl \\t file.tsv
 ```
 
 ---
-#Script functions
+# Script functions
 tableToXlsx.pl:
 When you directly open something in excel this is what happens, or at least it will try to emulate the default behavior. This will be greedy toward interpreting everything as dates and as numbers. See also 'tableToXlsxAsStrings.pl' below
 
