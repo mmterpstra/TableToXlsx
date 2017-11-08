@@ -1,11 +1,9 @@
----
 #Summary / main notes
 
 Convert your text based tables to excel format / Minimal example of the Excel::Writer::XLSX module in perl.
 Some tables are best advised to be inspected in R but sometimes the user has more experience with spreadsheets. So for user friendlyness i made an automatic conversion tool to a spreadsheet friendly format using the 'Excel-Writer-XLSX-0.77' module / perl-v5.10.0. Although I've not tested it should be forward compatible.
-The tableToXlsxAsStrings.pl should be mainly be used to convert genename tables to xlsx tables and for conversion of comma separated integer subfields. For incompatibilities with the dutch locale -> don't use it!
+The tableToXlsxAsStrings.pl should be mainly be used to convert genename tables to xlsx tables and for conversion of comma separated integer subfields. For incompatibilities with the dutch locale -> don't use the locale!
 
----
 #Requirements
 
 perl v5.10.0. Main goal: get 'Excel-Writer-XLSX-0.77' working. The rest are missing dependancies (of perl 5.10.0) in newer versions of perl most of them come preinstalled.
@@ -15,7 +13,23 @@ File-Path-2.09
 File-Temp-0.2304
 parent-0.228
 
----
+#Installing on Ubuntu
+
+Code below because copy paste installs are the best
+```
+#1. install Excel::Writer::XLSX perl module 
+sudo apt install libexcel-writer-xlsx-perl
+#2. Dowload git repo and add location to path
+wget https://github.com/mmterpstra/TableToXlsx/archive/master.zip
+unzip https://github.com/mmterpstra/TableToXlsx/archive/master.zip
+export PATH="$PATH:${PWD}/TableToXlsx-master/"
+```
+perm install
+```
+echo '#table to xlsx conversion' >>~/.bashrc
+echo 'export PATH="$PATH:${PWD}/TableToXlsx-master/"' >>~/.bashrc
+```
+
 #Use
 
 ```
@@ -27,7 +41,7 @@ output in FILE.xlsx
 
 Use examples
 
-this both examples will generate file.tsv.xlsx the second will overwrite the first.
+This both examples will generate file.tsv.xlsx the second will overwrite the first.
 
 ```
 perl ${TABTOXLSX_HOME}tableToXlsxAsStrings.pl \\t file.tsv
