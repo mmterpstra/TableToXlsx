@@ -1,12 +1,11 @@
 language: perl
 #perl:
 # - "5.18"
-before_install:
-#note: might need cleanup here and there
-#install xlsx writer module
-  - sudo apt install -qq libexcel-writer-xlsx-perl
 install:
+  - sudo apt install -qq libexcel-writer-xlsx-perl
+before_script:
   - export PERL5LIB=$PERL5LIB:/usr/share/perl5
+script:
   - echo "Hello world" > file.tsv
   - perl tableToXlsxAsStrings.pl \\t file.tsv
   - perl tableToXlsxAsStrings.pl \\t file.tsv
