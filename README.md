@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mmterpstra/TableToXlsx.svg?branch=master)](https://travis-ci.org/mmterpstra/TableToXlsx)
+
 # Summary / main notes
 
 Convert your text based tables to excel format / Minimal example of the Excel::Writer::XLSX module in perl.
