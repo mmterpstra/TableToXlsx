@@ -39,7 +39,7 @@ for my $file (@files){
 	my $workSheets;
 	push(@{$workSheets},$workBook->add_worksheet());
 	
-	my $colmax=256;
+	my $colmax=1024;
 	while (<TXTFILE>) {
 		chomp;
 		my @t = split("$del");
