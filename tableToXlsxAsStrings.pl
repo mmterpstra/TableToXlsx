@@ -55,4 +55,6 @@ for my $file (@files){
 		}
 	}
 	close(TXTFILE);
+	#Without this line corrupt xlsx files are produced
+	$workBook->close();
 }
