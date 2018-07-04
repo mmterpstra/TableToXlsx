@@ -2,7 +2,7 @@ language: perl
 #perl:
 # - "5.18"
 before_install:
-  - "cpanm --installdeps --notest . || (tail -n 5000 /home/travis/.cpanm/work/*/build.log && exit 1)
+  - cpanm --installdeps --notest . || (tail -n 5000 /home/travis/.cpanm/work/*/build.log && exit 1)
 script:
   - echo "Hello world" > file.tsv
   - tableToXlsxAsStrings.pl \\t file.tsv
