@@ -1,13 +1,11 @@
 language: perl
 #perl:
 # - "5.18"
-install:
-  - sudo apt install -qq libexcel-writer-xlsx-perl
-before_script:
-  - export PERL5LIB=$PERL5LIB:/usr/share/perl5
+before_install:
+  - "cpanm --installdeps --notest . || (tail -n 5000 /home/travis/.cpanm/work/*/build.log && exit 1)
 script:
   - echo "Hello world" > file.tsv
-  - perl tableToXlsxAsStrings.pl \\t file.tsv
-  - perl tableToXlsxAsStrings.pl \\t file.tsv
+  - tableToXlsxAsStrings.pl \\t file.tsv
+  - tableToXlsxAsStrings.pl \\t file.tsv
   - base64 file*.xlsx
   - echo "use it from the source dir"
