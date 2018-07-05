@@ -3,7 +3,9 @@ language: perl
 # - "5.18"
 before_install:
   - cpanm --installdeps --notest . || (tail -n 5000 /home/travis/.cpanm/work/*/build.log && exit 1)
-  - export PATH=/home/travis/bin/:$PATH
+install:
+# - cpanm --quiet --installdeps --notest .
+  - perl Makefile.PL && make test && make install
 script:
   - echo "Hello world" > file.tsv
   - tableToXlsxAsStrings.pl \\t file.tsv
