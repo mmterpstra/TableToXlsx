@@ -5,6 +5,27 @@ use strict;
 use warnings;
 use POSIX;
 use Excel::Writer::XLSX;
+require Exporter;
+
+our @ISA = qw(Exporter);
+
+# Items to export into callers namespace by default. Note: do not export
+# names by default without a very good reason. Use EXPORT_OK instead.
+# Do not simply export all your public functions/methods/constants.
+
+# This allows declaration	use pipeline-util ':all';
+# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
+# will save memory.
+#our %EXPORT_TAGS = ( 'all' => [ qw(
+#	'TargetVcfReAnnotator'
+#) ] );
+
+#our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+
+our @EXPORT = qw(
+	ConvertToXlsx
+);
+
 
 =head1 NAME
 
@@ -37,12 +58,12 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 TableToXlsx
+=head2 ConvertToXlsx
 
 Converts the input table to xlsx.
 
 use
-	TableToXlsx("tsv"=>$file,"sep"=>$del,'writestring'=> 1);
+	ConvertToXlsx("tsv"=>$file,"sep"=>$del,'writestring'=> 1);
 
 writestring	Default action is to write the data and let excel interpret it.
 		 set this to any other variable to write vales as string.
@@ -53,17 +74,24 @@ tsv		This sets the input file for conversion.
 
 =cut
 
-sub TableToXlsx {
+sub ConvertToXlsx {
 	my $self;%{$self}=@_;	
 	my $xlsxfile;
-	$xlsxfile = $self => {"xlsx"} or $xlsxfile = $self => {"tsv"};
-	my $file =  $self => {"tsv"};
+	$xlsxfile = $self -> {"xlsx"} or $xlsxfile = $self -> {"tsv"};
+	my $file =  $self -> {"tsv"};
 	my $ext = '.xlsx';
-	my $del = $self => {"sep"};
+	my $del = $self -> {"sep"};
+	#1024 is the max amount of columns of libreoffice with > $colmax the table in split between as much sheets as needed.
 	my $colmax=1024;
-	if($self => {"colmax"}){
-		$colmax = $self => {"colmax"};
+	if($self -> {"colmax"} && $self -> {"colmax"} > 0){
+		$colmax = $self -> {"colmax"};
 	}
+	#max no of rows to throw an error
+	my $rowmax=1048576;
+	if($self -> {"rowmax"} && $self -> {"rowmax"} > 0){
+		$rowmax = $self -> {"rowmax"};
+	}
+	
 	my $writestring = 0;
 	$writestring = $self -> {'writestring'} if(defined($self -> {'writestring'}));
 	
@@ -83,7 +111,10 @@ sub TableToXlsx {
 	while (<TXTFILE>) {
 		chomp;
 		my @t = split("$del");
-	
+		
+		die "Exceeded max no of rows in spreadsheet format limit=$rowmax now at $." 
+			if($rowmax < $.);
+		
 		my $col = 0;
 		for my $token (@t) {
 			if(not(floor($col/$colmax) < scalar(@{$workSheets}) )){
@@ -98,7 +129,7 @@ sub TableToXlsx {
 		}
 	}
 	close(TXTFILE);
-	#Without this line corrupt xlsx files are produced
+	#Without this line below corrupt xlsx files are produced
 	$workBook->close();
 }
 

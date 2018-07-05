@@ -26,5 +26,5 @@ if($ARGV[0] =~ /\\t|\t/){
 my $ext=".xlsx";
 
 for my $file (@files){
-	TableToXlsx("tsv"=>$file,"sep"=>$del,'writestring'=> 1);
+	ConvertToXlsx("tsv"=>$file,"sep"=>$del,'writestring'=> 1);
 }
