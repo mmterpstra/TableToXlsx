@@ -33,7 +33,7 @@ TableToXlsx - The great new TableToXlsx!
 
 =head1 VERSION
 
-Version 0.01
+Version 0.3.0
 
 =cut
 
